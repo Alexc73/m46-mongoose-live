@@ -3,12 +3,24 @@ require("./db/connection");
 
 const express = require("express");
 
-
 const app = express()
 
 const Book = require("./books/model");
 
 app.use(express.json());
+
+app.get("/books/getallbooks", async (req, res) => {
+    try {
+        const books = await Book.find({})
+        const successResponse = {
+            message: "success",
+            books: books,
+        };
+        res.status(200).json(successResponse)
+    } catch (error) {
+        console.log(error)
+    }
+});
 
 app.post("/books/addbook", async (req, res) => {
     try {
