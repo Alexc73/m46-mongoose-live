@@ -87,6 +87,28 @@ app.put("/books/updatebookauthor", async (req, res) =>{
     }
   });
 
+  //  dynamic updates:  search for the book and edit any field.
+  app.put("/books/updatebook", async (req, res) => {
+    try {
+      const filter = { title: req.query.title };
+      const update = { $set: {} };
+      if (req.body.title) update.$set.title = req.body.title;
+      if (req.body.author) update.$set.author = req.body.author;
+      if (req.body.genre) update.$set.genre = req.body.genre;
+      const options = { new: true };
+      const updatedBook = await Book.findOneAndUpdate(filter, update, options);
+  
+      const successResponse = {
+        message: "success",
+        updatedBook: updatedBook,
+      };
+      res.status(200).json(successResponse);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "error", error: error });
+    }
+  });
+
 
 app.listen(5002, () => console.log("Server is listening"));
 
