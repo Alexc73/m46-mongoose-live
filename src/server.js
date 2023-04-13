@@ -41,45 +41,52 @@ app.post("/books/addbook", async (req, res) => {
 });
 
 // PUT route to update a book's author
-app.put("/books/:id/updateauthor", async (req, res) => {
-    try {
-      const updatedBook = await Book.findByIdAndUpdate(
-        req.params.id,
-        { author: req.body.author },
-        { new: true }
-      );
-      if (!updatedBook) {
-        return res.status(404).json({ message: "Book not found" });
-      }
-      const successResponse = {
-        message: "success",
-        updatedBook: updatedBook,
-      };
-      res.status(200).json(successResponse);
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Server error" });
-    }
-  });
+  
+app.put("/books/updatebookauthor", async (req, res) =>{
+  try{
+  const updatedBook = await Book.updateOne(
+    {title: req.body.title},
+    {author: req.body.author}
+  );
+  const successResponse = {
+    message: "success",
+    updatedBook: updatedBook,
+  };
+  res.status(203).json(successResponse)
+} catch (error) {
+  console.log(error);
+}
+});
   
   // DELETE route to delete a book
-  app.delete("/books/:id/deletebook", async (req, res) => {
+  app.delete("/books/deletebook", async (req, res) => {
     try {
-      const deletedBook = await Book.findByIdAndDelete(req.params.id);
-      if (!deletedBook) {
-        return res.status(404).json({ message: "Book not found" });
-      }
+      const deletedBook = await Book.deleteOne({ title: req.body.title });
       const successResponse = {
         message: "success",
         deletedBook: deletedBook,
       };
-      res.status(200).json(successResponse);
+      res.status(204).json(successResponse);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server error" });
+    }
+  });
+
+  // DELETE route to delete all books
+
+  app.delete("/books/deleteall", async (req, res) => {
+    try {
+      const deletedBooks = await Book.deleteMany({});
+      const successResponse = {
+        message: "success",
+        deletedBooks: deletedBooks,
+      };
+      res.status(204).json(successResponse);
+    } catch (error) {
+      console.log(error);
     }
   });
 
 
-app.listen(5001, () => console.log("Server is listening"));
+app.listen(5002, () => console.log("Server is listening"));
 
