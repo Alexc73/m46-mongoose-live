@@ -87,7 +87,7 @@ app.put("/books/updatebookauthor", async (req, res) =>{
     }
   });
 
-  //  dynamic updates:  search for the book and edit any field.
+  //  dynamic updates:  search for the book title and edit any field.
   app.put("/books/updatebook", async (req, res) => {
     try {
       const filter = { title: req.query.title };
@@ -109,6 +109,36 @@ app.put("/books/updatebookauthor", async (req, res) =>{
     }
   });
 
+
+  // ---------------option 2 
+  // const myFunc = (key, value) => {
+  //   return {
+  //     [key]: value,
+  //   };
+  // };
+
+  // console.log(myFunc("michael"));
+  // console.log(myFunc("michaelsNiece", "no name"));
+  // console.log(myFunc("favFruit", "orange"));
+
+  // {
+  //   "title": "michaels book",
+  //   "key": "genre",
+  //   "value": "crime"
+  // }
+//   app.put("/books/updatebook", async (req, res) => {
+//     try {
+//       const updatedBook = await new Book.updateOne({title : req.body.title}, {key: req.body.value})
+//       const successResponse = {
+//         message: "success",
+//         updatedBook: updatedBook,
+//       };
+//       res.status(200).json(successResponse);
+//     } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "error", error: error });
+//   }
+// });
 
 app.listen(5002, () => console.log("Server is listening"));
 
